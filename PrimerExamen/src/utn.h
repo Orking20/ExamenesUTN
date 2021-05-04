@@ -32,5 +32,6 @@ int utn_getDireccion(char* pDireccion, char* pMensaje, char* pMensajeAltura, cha
 int utn_getNombreArchivo(char* pArchivo, char* pMensaje, char* pMensajeError);
 int utn_getEstadoCivil(char* pEstadoCivil, char* pMensaje, char* pMensajeError);
 int utn_getSexo(char* pSexo, char* pMensaje, char* pMensajeError);
+int utn_getRespuestaSiNo(char* pRespuesta, char* pMensaje, char* pMensajeError);
 
 #endif /* UTN_H_ */
