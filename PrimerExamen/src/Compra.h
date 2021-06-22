@@ -19,7 +19,7 @@ typedef struct
 }Compra;
 
 int compra_inicializar(Compra* pCompra, int limite);
-//void compra_harcodeo(Compra* pCompra, int limite);
+void compra_harcodeo(Compra* pCompra, int limite);
 
 int compra_mostrarId(Compra* pCompra, int indice);
 int compra_mostrar(Compra* pCompra, int limite);

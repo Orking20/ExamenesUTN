@@ -6,9 +6,17 @@
 #include "Compra.h"
 #include "Relacion.h"
 
+/*
+a) Cliente con más compras pagadas.
+b) Cliente con más compras pendientes.
+c) Lista de compras pendientes de pago con información de la compra y del cliente.*/
+
 static int info_colorDeBarbijoMasComprado(Compra* pCompra, int limiteCompra);
 static int info_comprasPendientes(Compra* pCompra, int limiteCompra);
 static int info_precioPorUnidadMinimo(Compra* pCompra, int limiteCompra);
+static int info_listadoComprasPendientes(Cliente* pCliente, Compra* pCompra, int limiteCliente, int limiteCompra);
+static int info_clienteConMasComprasPagadas(Cliente* pCliente, Compra* pCompra, int limiteCliente, int limiteCompra);
+static int info_clienteConMasComprasPendientes(Cliente* pCliente, Compra* pCompra, int limiteCliente, int limiteCompra);
 
 /**
  * brief Muestra todos los clientes con todas las compras que le corresponden a cada uno
@@ -45,10 +53,12 @@ int info_mostrarTodo(Cliente* pCliente, Compra* pCompra, int limiteCliente, int 
 
 /**
  * brief Muestra todos los informes
+ * \param Cliente* pCliente: Cadena que se usa para llamar a otras funciones
  * \param Compra* pCompra: Cadena que se usa para llamar a otras funciones
+ * \param int limiteCliente: Limite o tamaño de la cadena pCliente
  * \param int limiteCompra: Limite o tamaño de la cadena pCompra
  * \return Retora 0 (EXITO) si se mostraron los informes o -1 (ERROR) si no*/
-int info_mostrarInformes(Compra* pCompra, int limiteCompra)
+int info_mostrarInformes(Cliente* pCliente, Compra* pCompra, int limiteCliente, int limiteCompra)
 {
 	int retorno = -1;
 
@@ -59,6 +69,10 @@ int info_mostrarInformes(Compra* pCompra, int limiteCompra)
 			info_colorDeBarbijoMasComprado(pCompra, limiteCompra);
 			info_comprasPendientes(pCompra, limiteCompra);
 			info_precioPorUnidadMinimo(pCompra, limiteCompra);
+			info_listadoComprasPendientes(pCliente, pCompra, limiteCliente, limiteCompra);
+			info_clienteConMasComprasPagadas(pCliente, pCompra, limiteCliente, limiteCompra);
+			info_clienteConMasComprasPendientes(pCliente, pCompra, limiteCliente, limiteCompra);
+
 		}
 		else
 		{
@@ -190,6 +204,125 @@ static int info_precioPorUnidadMinimo(Compra* pCompra, int limiteCompra)
 		}
 
 		printf("\nPrecio por unidad más bajo: %.2f", precioPorUnidadMinimo);
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+/**
+ * brief uestra una lista de compras pendientes de pago con información de la compra y del cliente
+ * \param Cliente* pCliente: Cadena que se usa para listar los clientes
+ * \param Compra* pCompra: Cadena que se usa para listar las compras pendientes
+ * \param int limiteCliente: Limite o tamaño de la cadena pCliente
+ * \param int limiteCompra: Limite o tamaño de la cadena pCompra
+ * \return Retora 0 (EXITO) si se muestra el cliente y sus compras pendientes o -1 (ERROR) si no*/
+static int info_listadoComprasPendientes(Cliente* pCliente, Compra* pCompra, int limiteCliente, int limiteCompra)
+{
+	int retorno = -1;
+
+	if(pCompra != NULL && limiteCompra > 0)
+	{
+		for(int i = 1; i <= limiteCliente; i++)
+		{
+			if(pCliente[i - 1].idCliente == i)
+			{
+				printf("\nCliente %s %-15s  CUIT: %-15s\n", pCliente[i - 1].nombre, pCliente[i - 1].apellido, pCliente[i - 1].cuit);
+				for(int j = 0; j < limiteCompra; j++)
+				{
+					if(pCompra[j].estado == PENDIENTE_COBRAR && pCliente[i - 1].idCliente == pCompra[j].idCliente)
+					{
+						printf("\tDirección: %-15s Color: %-15s Cantidad de días: %-15d\n", pCompra[j].direccion, pCompra[j].color, pCompra[j].cantBarbijos);
+					}
+				}
+			}
+		}
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+/**
+ * brief Muestra el cliente con más compras pagadas
+ * \param Cliente* pCliente: Cadena que se usa para calcular el cliente con mas compras pagadas
+ * \param Compra* pCompra: Cadena que se usa para calcular el cliente con mas compras pagadas
+ * \param int limiteCliente: Limite o tamaño de la cadena pCliente
+ * \param int limiteCompra: Limite o tamaño de la cadena pCompra
+ * \return Retora 0 (EXITO) si se muestra el cliente con más compras pagadas o -1 (ERROR) si no*/
+static int info_clienteConMasComprasPagadas(Cliente* pCliente, Compra* pCompra, int limiteCliente, int limiteCompra)
+{
+	int retorno = -1;
+	char clienteConMasCompras[TAM_NOMBRE];
+	int contPagosCobrados = 0;
+	int cobradosMaximos;
+
+	if(pCompra != NULL && pCompra != NULL && limiteCliente > 0 && limiteCompra > 0)
+	{
+		for(int i = 1; i <= limiteCliente; i++)
+		{
+			if(pCliente[i - 1].idCliente == i)
+			{
+				contPagosCobrados = 0;
+				for(int j = 0; j < limiteCompra; j++)
+				{
+					if(pCompra[j].estado == COBRADO && pCliente[i - 1].idCliente == pCompra[j].idCliente)
+					{
+						contPagosCobrados++;
+					}
+				}
+				if(i == 1 || contPagosCobrados > cobradosMaximos)
+				{
+					cobradosMaximos = contPagosCobrados;
+					strncpy(clienteConMasCompras, pCliente[i - 1].nombre, TAM_NOMBRE);
+				}
+			}
+		}
+
+		printf("\nCliente con más compras pagadas: %s", clienteConMasCompras);
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+/**
+ * brief Muestra el cliente con más compras pendientes
+ * \param Cliente* pCliente: Cadena que se usa para calcular el cliente con mas compras pendientes
+ * \param Compra* pCompra: Cadena que se usa para calcular el cliente con mas compras pendientes
+ * \param int limiteCliente: Limite o tamaño de la cadena pCliente
+ * \param int limiteCompra: Limite o tamaño de la cadena pCompra
+ * \return Retora 0 (EXITO) si se muestra el cliente con más compras pendientes o -1 (ERROR) si no*/
+static int info_clienteConMasComprasPendientes(Cliente* pCliente, Compra* pCompra, int limiteCliente, int limiteCompra)
+{
+	int retorno = -1;
+	char clienteConMasCompras[TAM_NOMBRE];
+	int contPagosPendientes = 0;
+	int cobradosMaximos;
+
+	if(pCompra != NULL && pCompra != NULL && limiteCliente > 0 && limiteCompra > 0)
+	{
+		for(int i = 1; i <= limiteCliente; i++)
+		{
+			if(pCliente[i - 1].idCliente == i)
+			{
+				contPagosPendientes = 0;
+				for(int j = 0; j < limiteCompra; j++)
+				{
+					if(pCompra[j].estado == PENDIENTE_COBRAR && pCliente[i - 1].idCliente == pCompra[j].idCliente)
+					{
+						contPagosPendientes++;
+					}
+				}
+				if(i == 1 || contPagosPendientes > cobradosMaximos)
+				{
+					cobradosMaximos = contPagosPendientes;
+					strncpy(clienteConMasCompras, pCliente[i - 1].nombre, TAM_NOMBRE);
+				}
+			}
+		}
+
+		printf("\nCliente con más compras pendientes: %s", clienteConMasCompras);
 		retorno = 0;
 	}
 

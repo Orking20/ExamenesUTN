@@ -26,8 +26,8 @@ int main(void)
 
 	cliente_inicializar(arrayClientes, CANT_CLIENTES);
 	compra_inicializar(arrayCompras, CANT_COMPRAS);
-	//cliente_harcodeo(arrayClientes, 3);
-	//compra_harcodeo(arrayCompras, 7);
+	cliente_harcodeo(arrayClientes, 3);
+	compra_harcodeo(arrayCompras, 7);
 
 	do
 	{

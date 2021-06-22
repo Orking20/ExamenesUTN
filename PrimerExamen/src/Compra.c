@@ -34,7 +34,7 @@ int compra_inicializar(Compra* pCompra, int limite)
  * brief Agrega datos a la cadena pCompra
  * \param Compra* pCompra: Cadena que va a ser objetivo de la función
  * \param int limite: Limite o tamaño de la cadena*/
-/*void compra_harcodeo(Compra* pCompra, int limite)
+void compra_harcodeo(Compra* pCompra, int limite)
 {
 	int idCompra[7] = {1, 2, 3, 4, 5, 6, 7};
 	int idCliente[7] = {1, 1, 1, 2, 2, 3, 3};
@@ -53,7 +53,7 @@ int compra_inicializar(Compra* pCompra, int limite)
 		pCompra[i].importe = importe[i];
 		pCompra[i].estado = PENDIENTE_COBRAR;
 	}
-}*/
+}
 
 /**
  * brief Muestra el ID de una compra

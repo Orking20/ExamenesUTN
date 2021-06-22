@@ -33,7 +33,7 @@ int cliente_inicializar(Cliente* pCliente, int limite)
  * brief Agrega datos a la cadena pCliente
  * \param Cliente* pCliente: Cadena que va a ser objetivo de la función
  * \param int limite: Limite o tamaño de la cadena*/
-/*void cliente_harcodeo(Cliente* pCliente, int limite)
+void cliente_harcodeo(Cliente* pCliente, int limite)
 {
 	int idCliente[3] = {1, 2, 3};
 	char nombre[3][TAM_NOMBRE] = {"Gabriel", "Lautaro", "Mateo"};
@@ -49,7 +49,7 @@ int cliente_inicializar(Cliente* pCliente, int limite)
 		strncpy(pCliente[i].cuit, cuit[i], sizeof(pCliente[i].cuit));
 		pCliente[i].isEmpty = isEmpty[i];
 	}
-}*/
+}
 
 /**
  * brief Pide al usuario que cargue los datos de un cliente

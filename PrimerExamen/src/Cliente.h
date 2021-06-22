@@ -14,7 +14,7 @@ typedef struct
 }Cliente;
 
 int cliente_inicializar(Cliente* pCliente, int limite);
-//void cliente_harcodeo(Cliente* pCliente, int limite);
+void cliente_harcodeo(Cliente* pCliente, int limite);
 
 int cliente_alta(Cliente* pCliente, int indice);
 int cliente_modificar(Cliente* pCliente, int limite);
